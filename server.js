@@ -10,7 +10,7 @@ import crypto from 'crypto';
 
 const app = express();
 const PORT = 3000;
-const DATA_FILE = path.resolve('data', 'users.json');4
+const DATA_FILE = path.resolve('data', 'users.json');
 
 app.use(cors());
 app.use(express.json());
@@ -22,7 +22,7 @@ async function readUsers() {
         const data = await fs.promises.readFile(DATA_FILE, 'utf-8');
         return JSON.parse(data || '[]');
     } catch (error) {
-        await fs.writeFile(DATA_FILE, JSON.stringify([], null, 2));
+        await fs.promises.writeFile(DATA_FILE, JSON.stringify([], null, 2));
         return [];
     }
 };
@@ -30,7 +30,7 @@ async function readUsers() {
 
 // segundo, você pode criar uma função assíncrona para escrever os dados dos usuários no arquivo JSON. Aqui está um exemplo de como essa função pode ser implementada:
 async function writeUsers(users) {
-    await fs.writeFile(DATA_FILE, JSON.stringify(users, null, 2));
+    await fs.promises.writeFile(DATA_FILE, JSON.stringify(users, null, 2));
 };
 
 

@@ -86,6 +86,32 @@ app.post('/users', async (req, res) => {
     }
 });
 
+app.put('/users/:id', async (req, res) => {
+    try {
+        const { id } = req.params;
+        const { nome, email } = req.body;
+        const users = await readUsers();
+
+        const index = users.findIndex(u => u.id === id);
+        if (index === -1) {
+            return res.status(404).json({ error: 'Usuário não encontrado' });
+        }
+
+        users[index] = { 
+            ...users[index], 
+            nome: nome ?? users[index].nome,
+            email: email ?? users[index].email
+        };
+
+        await writeUsers(users);
+        res.json(users[index]);
+    }
+    catch (error) {
+        res.status(500).json({ error: 'Erro ao atualizar usuário' });
+    }
+});
+
+
 app.listen(PORT, () => {
     console.log(`Servidor rodando em http://localhost:${PORT}`);
 });

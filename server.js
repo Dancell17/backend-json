@@ -64,7 +64,6 @@ app.get('/users/:id', async (req, res) => {
 app.post('/users', async (req, res) => {
     try{
         const { nome, email } = req.body;
-
         if (!nome || !email) {
             return res.status(400).json({ error: 'Nome e email são obrigatórios' });
         }
@@ -74,7 +73,7 @@ app.post('/users', async (req, res) => {
             id: crypto.randomUUID(),
             nome,
             email,
-            criadoEm: new Date().toString(),
+            criadoEm: new Date().toISOString(),
         }
 
         users.push(novoUsuario);
@@ -82,7 +81,7 @@ app.post('/users', async (req, res) => {
 
         res.status(201).json(novoUsuario);
     }
-    catch (error) {
+    catch (err) {
         res.status(500).json({ error: 'Erro ao criar usuário' });
     }
 });
